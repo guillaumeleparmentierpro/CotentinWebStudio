@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="color-scheme" content="light">
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-5LY18V5457"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-5LY18V5457');
+    </script>
+    <title>Cotentin Web Studio</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+    
+<style>
+        :root {
+            --primary-bg: #f8fafc;
+            --card-bg: #ffffff;
+            --marine-blue: #0b2545; /* Le bleu très profond de ton phare */
+            --accent-color: #26c4c5; /* Le cyan lumineux des ondes */
+            --text-main: #1e293b;
+            --border-color: #e2e8f0;
+        }
+
+        body { 
+            font-family: 'Montserrat', sans-serif; 
+            background: var(--primary-bg); 
+            margin: 0; padding: 0; 
+            color: var(--text-main);
+            min-height: 100vh;
+        }
+
+        .app-container {
+            width: 100%;
+            max-width: 450px;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            box-sizing: border-box;
+            padding-bottom: 30px;
+        }
+
+        .sticky-header {
+            position: -webkit-sticky;
+            position: sticky;
+            top: 0;
+            background: var(--primary-bg);
+            z-index: 1000;
+            padding: 10px 15px 5px 15px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+            margin-bottom: 15px;
+        }
+
+        .top-nav { display: flex; margin-bottom: 5px; }
+
+        .btn-action { 
+            text-decoration: none; 
+            background: var(--marine-blue);
+            color: #ffffff !important;
+            border: none; border-radius: 8px; 
+            padding: 6px 10px;
+            font-weight: 700; font-size: 0.6rem; 
+            display: inline-flex; align-items: center;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .main-title {
+            font-size: 1.1rem;
+            font-weight: 900;
+            color: var(--marine-blue);
+            text-align: center;
+            margin: 5px 0 15px 0;
+            text-transform: uppercase;
+            letter-spacing: -0.5px;
+        }
+
+        .module {
+            background: var(--card-bg);
+            border-radius: 12px;
+            padding: 20px 15px;
+            margin: 0 15px 15px 15px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            border-top: 4px solid var(--accent-color); /* Ligne cyan en haut des blocs */
+            text-align: center;
+        }
+
+        .studio-logo {
+            width: 110px;
+            height: auto;
+            margin: 0 auto 15px auto;
+            display: block;
+        }
+
+        h2 {
+            font-size: 0.95rem;
+            font-weight: 800;
+            color: var(--marine-blue);
+            margin: 0 0 10px 0;
+        }
+
+        p {
+            font-size: 0.8rem;
+            color: #475569;
+            line-height: 1.6;
+            margin: 0 0 15px 0;
+            font-weight: 500;
+        }
+
+        .service-list {
+            text-align: left;
+            margin: 15px 0;
+            padding: 0;
+            list-style: none;
+        }
+
+        .service-list li {
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: var(--text-main);
+            margin-bottom: 10px;
+            display: flex;
+            align-items: flex-start;
+            gap: 8px;
+        }
+
+        .service-list li span {
+            color: var(--accent-color);
+            font-size: 1rem;
+            line-height: 1;
+        }
+
+        /* --- Design Puzzblock aligné avec le logo --- */
+        .puzzblock-badge {
+            background: linear-gradient(135deg, var(--marine-blue) 0%, #153866 100%);
+            color: white;
+            padding: 15px;
+            border-radius: 12px;
+            margin-top: 15px;
+            text-align: center;
+            border: 2px solid var(--accent-color);
+            box-shadow: 0 8px 15px rgba(11, 37, 69, 0.2);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .puzzblock-badge h3 {
+            margin: 0 0 5px 0;
+            font-size: 1rem;
+            font-weight: 900;
+            color: var(--accent-color); /* Titre en cyan */
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .puzzblock-badge p {
+            color: #f1f5f9;
+            margin: 0;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+
+        .btn-contact {
+            background: var(--accent-color);
+            color: var(--marine-blue) !important;
+            text-decoration: none;
+            padding: 12px 20px;
+            border-radius: 8px;
+            font-weight: 800;
+            font-size: 0.8rem;
+            display: block;
+            width: 100%;
+            box-sizing: border-box;
+            text-align: center;
+            box-shadow: 0 4px 10px rgba(38, 196, 197, 0.3);
+            transition: transform 0.2s;
+        }
+        .btn-contact:active { transform: scale(0.98); }
+    </style>
+</head>
+<body>
+
+    <div class="app-container">
+
+        <div class="sticky-header">
+            <div class="top-nav">
+                <a href="index.html" class="btn-action" data-i18n="btn_back_arrow">◀ RETOUR</a>
+            </div>
+            <h1 class="main-title">COTENTIN WEB STUDIO</h1>
+        </div>
+
+        <div class="module">
+            <img src="logo-cws.png" alt="Cotentin Web Studio Logo" class="studio-logo">
+            <h2 data-i18n="cws_intro_title">L'artisanat digital de votre région</h2>
+            <p data-i18n="cws_intro_text">Derrière cette application se cache <strong>Cotentin Web Studio</strong>, dirigé par Guillaume Leparmentier. Spécialisé dans la création de solutions digitales sur-mesure, j'accompagne les professionnels locaux dans leur transition numérique.</p>
+        </div>
+
+        <div class="module">
+            <h2 data-i18n="cws_services_title">Mes Services</h2>
+            <ul class="service-list">
+                <li><span>💻</span> <div data-i18n="cws_service_1"><strong>Création de Sites Web :</strong> Vitrines, E-commerce, ou refonte de sites existants.</div></li>
+                <li><span>📱</span> <div data-i18n="cws_service_2"><strong>Applications Web (PWA) :</strong> Des applications fluides comme celle que vous utilisez actuellement.</div></li>
+                <li><span>🔍</span> <div data-i18n="cws_service_3"><strong>Référencement (SEO) :</strong> Pour que vos clients vous trouvent facilement sur Google.</div></li>
+                <li><span>🎨</span> <div data-i18n="cws_service_4"><strong>Design & Identité :</strong> Logos, chartes graphiques et supports de communication.</div></li>
+            </ul>
+
+            <div class="puzzblock-badge">
+                <h3 data-i18n="cws_puzzblock_title">🧩 Créateur de Puzzblocks</h3>
+                <p data-i18n="cws_puzzblock_text">L'innovation par le jeu ! Je conçois et crée également des concepts originaux de Puzzblocks personnalisés. Une autre façon de se démarquer !</p>
+            </div>
+        </div>
+
+        <div class="module" style="background: #eff6ff; border-top-color: var(--accent-color);">
+            <h2 data-i18n="cws_contact_title">Un projet en tête ?</h2>
+            <p data-i18n="cws_contact_text">Vous souhaitez une application pour votre commerce, un site vitrine ou simplement discuter de vos besoins digitaux ?</p>
+            <a href="contact.html" class="btn-contact" data-i18n="cws_btn_contact">DISCUTONS DE VOTRE PROJET</a>
+        </div>
+
+    </div>
+
+    <script src="lang.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const browserLang = navigator.language.substring(0, 2);
+            const savedLang = localStorage.getItem('preferredLang') || (browserLang === 'en' ? 'en' : 'fr');
+            
+            document.querySelectorAll('[data-i18n]').forEach(el => {
+                const key = el.getAttribute('data-i18n');
+                if (translations[savedLang] && translations[savedLang][key]) {
+                    el.innerHTML = translations[savedLang][key]; 
+                }
+            });
+        });
+    </script>
+</body>
+</html>
