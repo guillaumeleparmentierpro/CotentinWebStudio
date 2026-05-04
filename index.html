@@ -39,8 +39,32 @@
             display: flex;
             flex-direction: column;
             box-sizing: border-box;
-            padding-top: 20px; /* Ajout d'un petit espace en haut vu qu'il n'y a plus de header */
             padding-bottom: 30px;
+        }
+
+        /* --- Nouvel En-tête aéré --- */
+        .hero-header {
+            text-align: center;
+            padding: 30px 15px 15px 15px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .studio-logo-hero {
+            width: 120px;
+            height: auto;
+            margin-bottom: 12px;
+            filter: drop-shadow(0 4px 6px rgba(0,0,0,0.05));
+        }
+
+        .main-title {
+            font-size: 1.25rem;
+            font-weight: 900;
+            color: var(--marine-blue);
+            margin: 0;
+            text-transform: uppercase;
+            letter-spacing: -0.5px;
         }
 
         .module {
@@ -51,13 +75,6 @@
             box-shadow: 0 4px 15px rgba(0,0,0,0.05);
             border-top: 4px solid var(--accent-color);
             text-align: center;
-        }
-
-        .studio-logo {
-            width: 110px;
-            height: auto;
-            margin: 0 auto 15px auto;
-            display: block;
         }
 
         h2 {
@@ -98,7 +115,6 @@
             line-height: 1;
         }
 
-        /* --- Design Puzzblock aligné avec le logo --- */
         .puzzblock-badge {
             background: linear-gradient(135deg, var(--marine-blue) 0%, #153866 100%);
             color: white;
@@ -151,8 +167,12 @@
 
     <div class="app-container">
 
+        <div class="hero-header">
+            <img src="logo-cws.png" alt="Cotentin Web Studio Logo" class="studio-logo-hero">
+            <h1 class="main-title">COTENTIN WEB STUDIO</h1>
+        </div>
+
         <div class="module">
-            <img src="logo-cws.gif" alt="Cotentin Web Studio Logo" class="studio-logo">
             <h2 data-i18n="cws_intro_title">L'artisanat digital de votre région</h2>
             <p data-i18n="cws_intro_text">Derrière cette application se cache <strong>Cotentin Web Studio</strong>, dirigé par Guillaume Leparmentier. Spécialisé dans la création de solutions digitales sur-mesure, j'accompagne les professionnels locaux dans leur transition numérique.</p>
         </div>
