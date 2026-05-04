@@ -14,12 +14,12 @@
     <title>Cotentin Web Studio</title>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800;900&display=swap" rel="stylesheet">
     
-<style>
+    <style>
         :root {
             --primary-bg: #f8fafc;
             --card-bg: #ffffff;
-            --marine-blue: #0b2545; /* Le bleu très profond de ton phare */
-            --accent-color: #26c4c5; /* Le cyan lumineux des ondes */
+            --marine-blue: #0b2545;
+            --accent-color: #26c4c5;
             --text-main: #1e293b;
             --border-color: #e2e8f0;
         }
@@ -39,41 +39,8 @@
             display: flex;
             flex-direction: column;
             box-sizing: border-box;
+            padding-top: 20px; /* Ajout d'un petit espace en haut vu qu'il n'y a plus de header */
             padding-bottom: 30px;
-        }
-
-        .sticky-header {
-            position: -webkit-sticky;
-            position: sticky;
-            top: 0;
-            background: var(--primary-bg);
-            z-index: 1000;
-            padding: 10px 15px 5px 15px;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
-            margin-bottom: 15px;
-        }
-
-        .top-nav { display: flex; margin-bottom: 5px; }
-
-        .btn-action { 
-            text-decoration: none; 
-            background: var(--marine-blue);
-            color: #ffffff !important;
-            border: none; border-radius: 8px; 
-            padding: 6px 10px;
-            font-weight: 700; font-size: 0.6rem; 
-            display: inline-flex; align-items: center;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-        }
-
-        .main-title {
-            font-size: 1.1rem;
-            font-weight: 900;
-            color: var(--marine-blue);
-            text-align: center;
-            margin: 5px 0 15px 0;
-            text-transform: uppercase;
-            letter-spacing: -0.5px;
         }
 
         .module {
@@ -82,7 +49,7 @@
             padding: 20px 15px;
             margin: 0 15px 15px 15px;
             box-shadow: 0 4px 15px rgba(0,0,0,0.05);
-            border-top: 4px solid var(--accent-color); /* Ligne cyan en haut des blocs */
+            border-top: 4px solid var(--accent-color);
             text-align: center;
         }
 
@@ -149,7 +116,7 @@
             margin: 0 0 5px 0;
             font-size: 1rem;
             font-weight: 900;
-            color: var(--accent-color); /* Titre en cyan */
+            color: var(--accent-color);
             text-transform: uppercase;
             letter-spacing: 1px;
         }
@@ -176,19 +143,13 @@
             box-shadow: 0 4px 10px rgba(38, 196, 197, 0.3);
             transition: transform 0.2s;
         }
+        
         .btn-contact:active { transform: scale(0.98); }
     </style>
 </head>
 <body>
 
     <div class="app-container">
-
-        <div class="sticky-header">
-            <div class="top-nav">
-                <a href="index.html" class="btn-action" data-i18n="btn_back_arrow">◀ RETOUR</a>
-            </div>
-            <h1 class="main-title">COTENTIN WEB STUDIO</h1>
-        </div>
 
         <div class="module">
             <img src="logo-cws.png" alt="Cotentin Web Studio Logo" class="studio-logo">
