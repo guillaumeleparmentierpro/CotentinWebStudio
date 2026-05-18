@@ -123,6 +123,7 @@
 
 <div class="app-container">
 
+    <!-- PANNEAU DE CONTRÔLE -->
     <div class="no-print">
         <h2>🛠️ Paramètres de la facture</h2>
         
@@ -188,6 +189,7 @@
         </div>
     </div>
 
+    <!-- LE GABARIT DE LA FACTURE -->
     <div class="invoice-paper">
         
         <div class="header-top">
@@ -198,6 +200,7 @@
         </div>
 
         <div class="addresses">
+            <!-- ÉMETTEUR -->
             <div class="address-box">
                 <div class="box-title">ÉMETTEUR</div>
                 <strong>Guillaume Leparmentier - Cotentin Web Studio</strong><br>
@@ -209,6 +212,7 @@
                 <strong>N° SIRET: 10454369900011</strong>
             </div>
 
+            <!-- CLIENT -->
             <div class="address-box client-box">
                 <div class="box-title">CLIENT</div>
                 <strong id="out-client-nom">L'Épicerie Fine Carteret L.E.F.</strong><br>
@@ -219,6 +223,7 @@
 
         <div class="invoice-number">FACTURE N°: <span id="out-numero">CWS-2026-007</span></div>
 
+        <!-- TABLEAU DES PRESTATIONS -->
         <div style="overflow-x: auto;">
             <table>
                 <thead>
@@ -240,7 +245,9 @@
             </table>
         </div>
 
+        <!-- GRILLE DU BAS -->
         <div class="bottom-grid">
+            <!-- INFORMATIONS LÉGALES -->
             <table class="info-table">
                 <tr><th>Date d'émission:</th><td id="out-date-em">2 mai 2026</td></tr>
                 <tr><th>Date de règlement:</th><td>À réception</td></tr>
@@ -249,6 +256,7 @@
                 <tr><th>Indemnité forfaitaire:</th><td>40€</td></tr>
             </table>
 
+            <!-- TOTAUX -->
             <table class="total-table">
                 <tr>
                     <th>TOTAL HT:</th>
@@ -265,6 +273,7 @@
             </table>
         </div>
 
+        <!-- PIED DE PAGE & PAIEMENT -->
         <div class="footer-legal">
             <span class="tva-mention">TVA non applicable, art. 293 B du CGI</span>
             
@@ -327,6 +336,11 @@
         } else {
             divAcq.style.display = 'none';
         }
+        
+        // MODIFICATION POUR LE NOM DU FICHIER PDF
+        // On modifie le titre de la page web dynamiquement.
+        // Le navigateur utilisera ce titre comme nom par défaut lors de l'enregistrement en PDF.
+        document.title = numero ? "Facture_" + numero : "Facture_Cotentin_Web_Studio";
     }
 
     function envoyerEmail() {
@@ -340,8 +354,15 @@
 
         const subject = encodeURIComponent("Votre facture Cotentin Web Studio - " + numero);
         
-        // Utilisation de template literals robustes pour éviter la coupure de chaîne JavaScript
-        const bodyText = `Bonjour,\n\nVeuillez trouver ci-joint votre facture concernant notre prestation.\n\nJe reste à votre entière disposition pour toute question.\n\nCordialement,\nGuillaume Leparmentier\nCotentin Web Studio`;
+        const bodyText = `Bonjour,
+
+Veuillez trouver ci-joint votre facture concernant notre prestation.
+
+Je reste à votre entière disposition pour toute question.
+
+Cordialement,
+Guillaume Leparmentier
+Cotentin Web Studio`;
         
         const body = encodeURIComponent(bodyText);
         window.location.href = "mailto:" + email + "?subject=" + subject + "&body=" + body;
