@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Facturation - Cotentin Web Studio</title>
+    <style>
+        /* --- DESIGN SYSTEM & COULEURS --- */
+        :root {
+            --primary: #1e3a8a; /* Bleu profond professionnel */
+            --primary-light: #eff6ff;
+            --text: #1f2937;
+            --bg: #f3f4f6;
+            --border: #e5e7eb;
+            --accent: #059669; /* Vert pour les totaux */
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg);
+            color: var(--text);
+            padding: 20px;
+            display: block;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        /* --- INTERFACE DE SAISIE (MASQUÉE À L'IMPRESSION) --- */
+        .form-section {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);
+            margin-bottom: 30px;
+        }
+
+        h2 {
+            color: var(--primary);
+            margin-bottom: 15px;
+            font-size: 1.2rem;
+            border-bottom: 2px solid var(--primary-light);
+            padding-bottom: 5px;
+        }
+
+        .grid-2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+
+        @media (max-width: 600px) {
+            .grid-2 { grid-template-columns: 1fr; }
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+
+        label {
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: #4b5563;
+        }
+
+        input, select, textarea {
+            padding: 10px;
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            font-size: 0.95rem;
+            outline: none;
+        }
+
+        input:focus, select:focus {
+            border-color: var(--primary);
+        }
+
+        .btn-print {
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            font-size: 1rem;
+            font-weight: bold;
+            border-radius: 6px;
+            cursor: pointer;
+            width: 100%;
+            margin-top: 10px;
+            transition: background 0.2s;
+        }
+
+        .btn-print:hover { background-color: #1d4ed8; }
+
+        /* --- PREVIEW DE LA FACTURE (STYLE CORPORATE) --- */
+        .invoice-preview {
+            background: white;
+            padding: 40px;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);
+            min-height: 297mm; /* Ratio A4 approché */
+        }
+
+        .invoice-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 40px;
+        }
+
+        .company-info h1 {
+            color: var(--primary);
+            font-size: 1.6rem;
+            margin-bottom: 5px;
+        }
+
+        .company-info p, .client-info p {
+            font-size: 0.9rem;
+            color: #4b5563;
+            line-height: 1.4;
+        }
+
+        .invoice-details {
+            text-align: right;
+        }
+
+        .invoice-details h3 {
+            font-size: 1.4rem;
+            color: var(--text);
+            margin-bottom: 10px;
+        }
+
+        .client-block {
+            background: var(--primary-light);
+            padding: 15px;
+            border-radius: 6px;
+            margin-bottom: 40px;
+            max-width: 350px;
+            margin-left: auto;
+        }
+
+        .invoice-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 30px;
+        }
+
+        .invoice-table th {
+            background-color: var(--primary);
+            color: white;
+            text-align: left;
+            padding: 10px;
+            font-size: 0.9rem;
+        }
+
+        .invoice-table td {
+            padding: 12px 10px;
+            border-bottom: 1px solid var(--border);
+            font-size: 0.95rem;
+        }
+
+        .text-right { text-align: right; }
+
+        .total-block {
+            display: flex;
+            justify-content: flex-end;
+            margin-bottom: 40px;
+        }
+
+        .total-table {
+            width: 250px;
+        }
+
+        .total-table td {
+            padding: 8px;
+            font-size: 1rem;
+        }
+
+        .total-row {
+            font-weight: bold;
+            color: var(--accent);
+            font-size: 1.1rem !important;
+            border-top: 2px solid var(--border);
+        }
+
+        .legal-mention {
+            margin-top: 60px;
+            font-size: 0.75rem;
+            color: #9ca3af;
+            text-align: center;
+            line-height: 1.5;
+        }
+
+        /* --- CONFIGURATION POUR L'IMPRESSION (PDF) --- */
+        @media print {
+            body {
+                background: white;
+                padding: 0;
+            }
+            .form-section {
+                display: none; /* Cache les formulaires */
+            }
+            .invoice-preview {
+                box-shadow: none;
+                padding: 0;
+                margin: 0;
+                width: 100%;
+            }
+            @page {
+                size: A4;
+                margin: 20mm;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+
+    <div class="form-section">
+        <h2>Générateur de Facture - Terrain</h2>
+        <div class="grid-2">
+            <div class="form-group">
+                <label for="inputNum">Numéro de Facture</label>
+                <input type="text" id="inputNum" value="F2026-001" oninput="updateInvoice()">
+            </div>
+            <div class="form-group">
+                <label for="inputClient">Nom du Client (Papy/Mamie)</label>
+                <input type="text" id="inputClient" placeholder="M. Jean Dupont" oninput="updateInvoice()">
+            </div>
+        </div>
+        
+        <div class="grid-2">
+            <div class="form-group">
+                <label for="inputAddress">Adresse du Client</label>
+                <input type="text" id="inputAddress" placeholder="12 Rue de la Mer, 50760 Barfleur" oninput="updateInvoice()">
+            </div>
+            <div class="form-group">
+                <label for="selectForfait">Forfait Appliqué</label>
+                <select id="selectForfait" onchange="applyForfait()">
+                    <option value="40" data-label="Forfait Sécurité & Nettoyage PC (1h)">Sécurité PC (1h) - 40€</option>
+                    <option value="60" data-label="Forfait Initiation & Prise en main Smartphone (1h30)" selected>Initiation Smartphone (1h30) - 60€</option>
+                    <option value="80" data-label="Forfait Configuration Complète & Tablettes (2h)">Forfait complet (2h) - 80€</option>
+                </select>
+            </div>
+        </div>
+
+        <button class="btn-print" onclick="window.print()">Générer le PDF / Imprimer</button>
+    </div>
+
+    <div class="invoice-preview">
+        <div class="invoice-header">
+            <div class="company-info">
+                <h1>Cotentin Web Studio</h1>
+                <p>Guillaume Leparmentier</p>
+                <p>La Haye-d'Ectot, 50270</p>
+                <p>Siret : [Ton Numéro SIRET à ajouter]</p>
+            </div>
+            <div class="invoice-details">
+                <h3>FACTURE</h3>
+                <p><strong>N° :</strong> <span id="pdfNum">F2026-001</span></p>
+                <p><strong>Date :</strong> <span id="pdfDate">18/05/2026</span></p>
+            </div>
+        </div>
+
+        <div class="client-block">
+            <p style="font-weight: bold; margin-bottom: 5px; color: var(--primary);">Facturé à :</p>
+            <p id="pdfClientName">M. Jean Dupont</p>
+            <p id="pdfClientAddress">12 Rue de la Mer, 50760 Barfleur</p>
+        </div>
+
+        <table class="invoice-table">
+            <thead>
+                <tr>
+                    <th>Description de la prestation</th>
+                    <th class="text-right" style="width: 100px;">Total (HT)</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td id="pdfDesignation">Forfait Initiation & Prise en main Smartphone (1h30)</td>
+                    <td class="text-right" id="pdfPrice">60.00 €</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <div class="total-block">
+            <table class="total-table">
+                <tr>
+                    <td>Total Brut :</td>
+                    <td class="text-right" id="pdfTotalBrut">60.00 €</td>
+                </tr>
+                <tr class="total-row">
+                    <td>Net à payer :</td>
+                    <td class="text-right" id="pdfNet">60.00 €</td>
+                </tr>
+            </table>
+        </div>
+
+        <div class="legal-mention">
+            <p><strong>TVA non applicable, art. 293 B du CGI</strong></p>
+            <p>Dispense d'immatriculation au registre du commerce et des sociétés (RCS) et à la chambre des métiers et de l'artisanat (CMA).</p>
+            <p>Merci pour votre confiance !</p>
+        </div>
+    </div>
+
+</div>
+
+<script>
+    // Initialise la date du jour automatiquement
+    const aujourdhui = new Date();
+    const options = { year: 'numeric', month: 'numeric', day: 'numeric' };
+    document.getElementById('pdfDate').innerText = aujourdhui.toLocaleDateString('fr-FR', options);
+
+    function updateInvoice() {
+        // Met à jour le numéro et le client en temps réel
+        document.getElementById('pdfNum').innerText = document.getElementById('inputNum').value || 'À préciser';
+        document.getElementById('pdfClientName').innerText = document.getElementById('inputClient').value || 'Nom du client';
+        document.getElementById('pdfClientAddress').innerText = document.getElementById('inputAddress').value || 'Adresse du client';
+    }
+
+    function applyForfait() {
+        const select = document.getElementById('selectForfait');
+        const selectedOption = select.options[select.selectedIndex];
+        
+        const label = selectedOption.getAttribute('data-label');
+        const price = parseFloat(selectedOption.value).toFixed(2);
+
+        // Mise à jour de la table de facture
+        document.getElementById('pdfDesignation').innerText = label;
+        document.getElementById('pdfPrice').innerText = price + " €";
+        document.getElementById('pdfTotalBrut').innerText = price + " €";
+        document.getElementById('pdfNet').innerText = price + " €";
+    }
+
+    // Lancement initial
+    applyForfait();
+</script>
+
+</body>
+</html>
