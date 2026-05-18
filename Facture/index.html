@@ -3,347 +3,294 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Facturation - Cotentin Web Studio</title>
+    <title>Générateur de Facture - Cotentin Web Studio</title>
     <style>
-        /* --- DESIGN SYSTEM & COULEURS --- */
+        /* --- STYLES GÉNÉRAUX ET INTERFACE DE SAISIE --- */
         :root {
-            --primary: #1e3a8a; /* Bleu profond professionnel */
-            --primary-light: #eff6ff;
-            --text: #1f2937;
-            --bg: #f3f4f6;
-            --border: #e5e7eb;
-            --accent: #059669; /* Vert pour les totaux */
+            --primary: #333333;
+            --bg: #f4f4f5;
+            --border: #d1d5db;
         }
 
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: Arial, sans-serif; }
+        
+        body { background-color: var(--bg); color: #000; padding: 20px; font-size: 14px; }
+        
+        .app-container { max-width: 1000px; margin: 0 auto; display: flex; flex-direction: column; gap: 20px; }
+
+        .no-print {
+            background: white; padding: 20px; border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
         }
 
-        body {
-            background-color: var(--bg);
-            color: var(--text);
-            padding: 20px;
-            display: block;
-        }
-
-        .container {
-            max-width: 900px;
-            margin: 0 auto;
-        }
-
-        /* --- INTERFACE DE SAISIE (MASQUÉE À L'IMPRESSION) --- */
-        .form-section {
-            background: white;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);
-            margin-bottom: 30px;
-        }
-
-        h2 {
-            color: var(--primary);
-            margin-bottom: 15px;
-            font-size: 1.2rem;
-            border-bottom: 2px solid var(--primary-light);
-            padding-bottom: 5px;
-        }
-
-        .grid-2 {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 15px;
-            margin-bottom: 15px;
-        }
-
-        @media (max-width: 600px) {
-            .grid-2 { grid-template-columns: 1fr; }
-        }
-
-        .form-group {
-            display: flex;
-            flex-direction: column;
-            gap: 5px;
-        }
-
-        label {
-            font-size: 0.85rem;
-            font-weight: 600;
-            color: #4b5563;
-        }
-
-        input, select, textarea {
-            padding: 10px;
-            border: 1px solid var(--border);
-            border-radius: 6px;
-            font-size: 0.95rem;
-            outline: none;
-        }
-
-        input:focus, select:focus {
-            border-color: var(--primary);
-        }
+        .no-print h2 { margin-bottom: 15px; color: var(--primary); font-size: 1.2rem; }
+        
+        .form-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin-bottom: 15px; }
+        
+        .form-group { display: flex; flex-direction: column; gap: 5px; }
+        .form-group label { font-weight: bold; font-size: 0.85rem; color: #555; }
+        .form-group input, .form-group select { padding: 8px; border: 1px solid var(--border); border-radius: 4px; }
 
         .btn-print {
-            background-color: var(--primary);
-            color: white;
-            border: none;
-            padding: 12px 20px;
-            font-size: 1rem;
-            font-weight: bold;
-            border-radius: 6px;
-            cursor: pointer;
-            width: 100%;
-            margin-top: 10px;
-            transition: background 0.2s;
+            background: #2563eb; color: white; border: none; padding: 12px 20px; font-size: 1rem;
+            border-radius: 4px; cursor: pointer; width: 100%; font-weight: bold;
+        }
+        .btn-print:hover { background: #1d4ed8; }
+
+        /* --- LE GABARIT DE LA FACTURE (INSPIRÉ DU PDF) --- */
+        .invoice-paper {
+            background: white; padding: 40px; border-radius: 2px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1); min-height: 297mm; width: 210mm;
+            margin: 0 auto; position: relative;
         }
 
-        .btn-print:hover { background-color: #1d4ed8; }
+        .header-top { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 30px; }
+        
+        .logo-box { text-align: left; }
+        /* Remplace le src par l'URL de ton vrai logo sur ton site */
+        .logo-box img { max-width: 150px; height: auto; margin-bottom: 5px; }
+        .logo-box h1 { font-size: 18px; font-weight: bold; letter-spacing: 1px; color: #333; }
+        
+        .exemplaire { font-size: 12px; color: #666; font-style: italic; margin-top: 10px; text-align: right;}
 
-        /* --- PREVIEW DE LA FACTURE (STYLE CORPORATE) --- */
-        .invoice-preview {
-            background: white;
-            padding: 40px;
-            border-radius: 8px;
-            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);
-            min-height: 297mm; /* Ratio A4 approché */
-        }
+        .addresses { display: flex; justify-content: space-between; margin-bottom: 40px; }
+        
+        .box-title { font-weight: bold; text-decoration: underline; margin-bottom: 8px; font-size: 13px; }
+        .address-box { width: 45%; line-height: 1.5; font-size: 13px; }
+        
+        .client-box { background-color: #f9f9f9; padding: 15px; border: 1px solid #eee; }
 
-        .invoice-header {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 40px;
-        }
+        .invoice-number { font-size: 18px; font-weight: bold; margin-bottom: 20px; }
 
-        .company-info h1 {
-            color: var(--primary);
-            font-size: 1.6rem;
-            margin-bottom: 5px;
-        }
-
-        .company-info p, .client-info p {
-            font-size: 0.9rem;
-            color: #4b5563;
-            line-height: 1.4;
-        }
-
-        .invoice-details {
-            text-align: right;
-        }
-
-        .invoice-details h3 {
-            font-size: 1.4rem;
-            color: var(--text);
-            margin-bottom: 10px;
-        }
-
-        .client-block {
-            background: var(--primary-light);
-            padding: 15px;
-            border-radius: 6px;
-            margin-bottom: 40px;
-            max-width: 350px;
-            margin-left: auto;
-        }
-
-        .invoice-table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-bottom: 30px;
-        }
-
-        .invoice-table th {
-            background-color: var(--primary);
-            color: white;
-            text-align: left;
-            padding: 10px;
-            font-size: 0.9rem;
-        }
-
-        .invoice-table td {
-            padding: 12px 10px;
-            border-bottom: 1px solid var(--border);
-            font-size: 0.95rem;
-        }
-
+        /* Table principale */
+        table { width: 100%; border-collapse: collapse; margin-bottom: 30px; }
+        th { background-color: #f2f2f2; border: 1px solid #ccc; padding: 10px; text-align: left; font-size: 13px; }
+        td { border: 1px solid #ccc; padding: 10px; font-size: 13px; }
         .text-right { text-align: right; }
+        .text-center { text-align: center; }
 
-        .total-block {
-            display: flex;
-            justify-content: flex-end;
-            margin-bottom: 40px;
-        }
+        /* Grille du bas (Infos à gauche / Totaux à droite) */
+        .bottom-grid { display: flex; justify-content: space-between; align-items: flex-start; }
+        
+        .info-table { width: 45%; }
+        .info-table th { background: none; border: none; padding: 4px 10px 4px 0; text-align: left; width: 140px; }
+        .info-table td { border: none; padding: 4px 0; }
 
-        .total-table {
-            width: 250px;
-        }
+        .total-table { width: 45%; }
+        .total-table td, .total-table th { border: 1px solid #ccc; padding: 8px 10px; }
+        .total-table th { background-color: #f2f2f2; text-align: left; }
+        .bold-total { font-weight: bold; font-size: 15px; }
 
-        .total-table td {
-            padding: 8px;
-            font-size: 1rem;
-        }
+        /* Mentions légales et pied de page */
+        .footer-legal { margin-top: 40px; font-size: 11px; line-height: 1.4; }
+        .footer-legal p { margin-bottom: 5px; }
+        .tva-mention { font-weight: bold; margin-bottom: 15px; display: block; font-size: 12px; }
+        
+        .payment-info { background: #f9f9f9; padding: 10px; border: 1px solid #eee; margin-top: 15px; }
+        .acquittee { margin-top: 15px; font-weight: bold; font-style: italic; display: none; }
 
-        .total-row {
-            font-weight: bold;
-            color: var(--accent);
-            font-size: 1.1rem !important;
-            border-top: 2px solid var(--border);
-        }
-
-        .legal-mention {
-            margin-top: 60px;
-            font-size: 0.75rem;
-            color: #9ca3af;
-            text-align: center;
-            line-height: 1.5;
-        }
-
-        /* --- CONFIGURATION POUR L'IMPRESSION (PDF) --- */
+        /* --- CONFIGURATION D'IMPRESSION --- */
         @media print {
-            body {
-                background: white;
-                padding: 0;
-            }
-            .form-section {
-                display: none; /* Cache les formulaires */
-            }
-            .invoice-preview {
-                box-shadow: none;
-                padding: 0;
-                margin: 0;
-                width: 100%;
-            }
-            @page {
-                size: A4;
-                margin: 20mm;
-            }
+            body { background: white; padding: 0; }
+            .no-print { display: none; }
+            .app-container { max-width: 100%; margin: 0; display: block; }
+            .invoice-paper { box-shadow: none; margin: 0; width: 100%; min-height: auto; padding: 0; }
+            @page { margin: 15mm; }
         }
     </style>
 </head>
 <body>
 
-<div class="container">
+<div class="app-container">
 
-    <div class="form-section">
-        <h2>Générateur de Facture - Terrain</h2>
-        <div class="grid-2">
+    <div class="no-print">
+        <h2>🛠️ Paramètres de la facture</h2>
+        
+        <div class="form-grid">
             <div class="form-group">
-                <label for="inputNum">Numéro de Facture</label>
-                <input type="text" id="inputNum" value="F2026-001" oninput="updateInvoice()">
+                <label>N° Facture</label>
+                <input type="text" id="in-numero" value="CWS-2026-007" oninput="updateFacture()">
             </div>
             <div class="form-group">
-                <label for="inputClient">Nom du Client (Papy/Mamie)</label>
-                <input type="text" id="inputClient" placeholder="M. Jean Dupont" oninput="updateInvoice()">
+                <label>Nom du Client</label>
+                <input type="text" id="in-client-nom" placeholder="M. Jean Dupont" oninput="updateFacture()">
+            </div>
+            <div class="form-group">
+                <label>Adresse du Client (Ligne 1)</label>
+                <input type="text" id="in-client-ad1" placeholder="12 Rue de la Mer" oninput="updateFacture()">
+            </div>
+            <div class="form-group">
+                <label>Code Postal & Ville</label>
+                <input type="text" id="in-client-ad2" placeholder="50760 Barfleur" oninput="updateFacture()">
             </div>
         </div>
-        
-        <div class="grid-2">
+
+        <div class="form-grid">
             <div class="form-group">
-                <label for="inputAddress">Adresse du Client</label>
-                <input type="text" id="inputAddress" placeholder="12 Rue de la Mer, 50760 Barfleur" oninput="updateInvoice()">
+                <label>Date d'émission</label>
+                <input type="text" id="in-date-em" value="18 mai 2026" oninput="updateFacture()">
             </div>
             <div class="form-group">
-                <label for="selectForfait">Forfait Appliqué</label>
-                <select id="selectForfait" onchange="applyForfait()">
-                    <option value="40" data-label="Forfait Sécurité & Nettoyage PC (1h)">Sécurité PC (1h) - 40€</option>
-                    <option value="60" data-label="Forfait Initiation & Prise en main Smartphone (1h30)" selected>Initiation Smartphone (1h30) - 60€</option>
-                    <option value="80" data-label="Forfait Configuration Complète & Tablettes (2h)">Forfait complet (2h) - 80€</option>
+                <label>Date d'exécution</label>
+                <input type="text" id="in-date-ex" value="18/05/2026" oninput="updateFacture()">
+            </div>
+            <div class="form-group">
+                <label>Prestation (Description)</label>
+                <input type="text" id="in-desc" value="Cours Informatique - Forfait Prise en main (1h30)" oninput="updateFacture()">
+            </div>
+            <div class="form-group">
+                <label>Prix HT (€)</label>
+                <input type="number" id="in-prix" value="60" oninput="updateFacture()">
+            </div>
+        </div>
+
+        <div class="form-grid">
+            <div class="form-group">
+                <label>Facture payée immédiatement ?</label>
+                <select id="in-paye" onchange="updateFacture()">
+                    <option value="non">Non (En attente de paiement)</option>
+                    <option value="oui">Oui (Afficher Acquittée)</option>
                 </select>
             </div>
         </div>
 
-        <button class="btn-print" onclick="window.print()">Générer le PDF / Imprimer</button>
+        <button class="btn-print" onclick="window.print()">🖨️ Générer le PDF / Imprimer</button>
     </div>
 
-    <div class="invoice-preview">
-        <div class="invoice-header">
-            <div class="company-info">
-                <h1>Cotentin Web Studio</h1>
-                <p>Guillaume Leparmentier</p>
-                <p>La Haye-d'Ectot, 50270</p>
-                <p>Siret : [Ton Numéro SIRET à ajouter]</p>
+    <div class="invoice-paper">
+        
+        <div class="header-top">
+            <div class="logo-box">
+                <h1 style="font-size:24px; color:#333;">COTENTIN WEB STUDIO</h1>
             </div>
-            <div class="invoice-details">
-                <h3>FACTURE</h3>
-                <p><strong>N° :</strong> <span id="pdfNum">F2026-001</span></p>
-                <p><strong>Date :</strong> <span id="pdfDate">18/05/2026</span></p>
+            <div class="exemplaire">Exemplaire client</div>
+        </div>
+
+        <div class="addresses">
+            <div class="address-box">
+                <div class="box-title">ÉMETTEUR</div>
+                <strong>Guillaume Leparmentier - Cotentin Web Studio</strong><br>
+                40 Route de la Berquerie<br>
+                50270 La Haye-d'Ectot<br>
+                FRANCE<br><br>
+                Téléphone: 06 60 86 13 21<br>
+                Email: guillaume.leparmentier.pro@gmail.com<br>
+                <strong>N° SIRET: 10454369900011</strong>
+            </div>
+
+            <div class="address-box client-box">
+                <div class="box-title">CLIENT</div>
+                <strong id="out-client-nom">L'Épicerie Fine Carteret L.E.F.</strong><br>
+                <span id="out-client-ad1">1 Av. de la République</span><br>
+                <span id="out-client-ad2">50270 Barneville Carteret</span>
             </div>
         </div>
 
-        <div class="client-block">
-            <p style="font-weight: bold; margin-bottom: 5px; color: var(--primary);">Facturé à :</p>
-            <p id="pdfClientName">M. Jean Dupont</p>
-            <p id="pdfClientAddress">12 Rue de la Mer, 50760 Barfleur</p>
-        </div>
+        <div class="invoice-number">FACTURE N°: <span id="out-numero">CWS-2026-007</span></div>
 
-        <table class="invoice-table">
+        <table>
             <thead>
                 <tr>
-                    <th>Description de la prestation</th>
-                    <th class="text-right" style="width: 100px;">Total (HT)</th>
+                    <th>Désignation des prestations</th>
+                    <th class="text-center" style="width: 10%;">Quantité</th>
+                    <th class="text-right" style="width: 20%;">Prix Unitaire HT</th>
+                    <th class="text-right" style="width: 20%;">Total HT</th>
                 </tr>
             </thead>
             <tbody>
                 <tr>
-                    <td id="pdfDesignation">Forfait Initiation & Prise en main Smartphone (1h30)</td>
-                    <td class="text-right" id="pdfPrice">60.00 €</td>
+                    <td id="out-desc">Vente d'espace publicitaire Application Port Barneville-Carteret</td>
+                    <td class="text-center">1</td>
+                    <td class="text-right"><span id="out-prix-u">25</span>€</td>
+                    <td class="text-right"><span id="out-prix-t">25</span>€</td>
                 </tr>
             </tbody>
         </table>
 
-        <div class="total-block">
+        <div class="bottom-grid">
+            <table class="info-table">
+                <tr><th>Date d'émission:</th><td id="out-date-em">2 mai 2026</td></tr>
+                <tr><th>Date de règlement:</th><td>À réception</td></tr>
+                <tr><th>Date d'exécution:</th><td id="out-date-ex">jusqu'au 31/12/2026</td></tr>
+                <tr><th>Taux de pénalités:</th><td>3 fois le taux d'intérêt légal</td></tr>
+                <tr><th>Indemnité forfaitaire:</th><td>40€</td></tr>
+            </table>
+
             <table class="total-table">
                 <tr>
-                    <td>Total Brut :</td>
-                    <td class="text-right" id="pdfTotalBrut">60.00 €</td>
+                    <th>TOTAL HT:</th>
+                    <td class="text-right"><span id="out-tot-ht">25</span>€</td>
                 </tr>
-                <tr class="total-row">
-                    <td>Net à payer :</td>
-                    <td class="text-right" id="pdfNet">60.00 €</td>
+                <tr>
+                    <th>TVA:</th>
+                    <td class="text-right">0,00€</td>
+                </tr>
+                <tr>
+                    <th class="bold-total">TOTAL TTC À PAYER:</th>
+                    <td class="text-right bold-total"><span id="out-tot-ttc">25</span>€</td>
                 </tr>
             </table>
         </div>
 
-        <div class="legal-mention">
-            <p><strong>TVA non applicable, art. 293 B du CGI</strong></p>
-            <p>Dispense d'immatriculation au registre du commerce et des sociétés (RCS) et à la chambre des métiers et de l'artisanat (CMA).</p>
-            <p>Merci pour votre confiance !</p>
+        <div class="footer-legal">
+            <span class="tva-mention">TVA non applicable, art. 293 B du CGI</span>
+            
+            <p><strong>Conditions de règlement:</strong></p>
+            <p>Paiement par Chèque / Virement bancaire / Espèces</p>
+            
+            <div class="payment-info">
+                <p><strong>RIB pour virement:</strong> FR76 1548 9047 0700 0520 7920 257-CMCIFR2A</p>
+                <p><strong>Revolut:</strong> @gleparme</p>
+            </div>
+
+            <p class="acquittee" id="out-acquittee">Acquittée le <span id="out-date-acq">02/05/2026</span> par chèque / espèces</p>
         </div>
+
     </div>
 
 </div>
 
 <script>
-    // Initialise la date du jour automatiquement
-    const aujourdhui = new Date();
-    const options = { year: 'numeric', month: 'numeric', day: 'numeric' };
-    document.getElementById('pdfDate').innerText = aujourdhui.toLocaleDateString('fr-FR', options);
+    function updateFacture() {
+        // Récupération des valeurs
+        const numero = document.getElementById('in-numero').value;
+        const clientNom = document.getElementById('in-client-nom').value || 'Nom du Client';
+        const clientAd1 = document.getElementById('in-client-ad1').value || 'Adresse Ligne 1';
+        const clientAd2 = document.getElementById('in-client-ad2').value || 'Code Postal et Ville';
+        const dateEm = document.getElementById('in-date-em').value;
+        const dateEx = document.getElementById('in-date-ex').value;
+        const desc = document.getElementById('in-desc').value;
+        const prix = parseFloat(document.getElementById('in-prix').value) || 0;
+        const paye = document.getElementById('in-paye').value;
 
-    function updateInvoice() {
-        // Met à jour le numéro et le client en temps réel
-        document.getElementById('pdfNum').innerText = document.getElementById('inputNum').value || 'À préciser';
-        document.getElementById('pdfClientName').innerText = document.getElementById('inputClient').value || 'Nom du client';
-        document.getElementById('pdfClientAddress').innerText = document.getElementById('inputAddress').value || 'Adresse du client';
-    }
-
-    function applyForfait() {
-        const select = document.getElementById('selectForfait');
-        const selectedOption = select.options[select.selectedIndex];
+        // Mise à jour de l'affichage
+        document.getElementById('out-numero').innerText = numero;
+        document.getElementById('out-client-nom').innerText = clientNom;
+        document.getElementById('out-client-ad1').innerText = clientAd1;
+        document.getElementById('out-client-ad2').innerText = clientAd2;
+        document.getElementById('out-date-em').innerText = dateEm;
+        document.getElementById('out-date-ex').innerText = dateEx;
+        document.getElementById('out-desc').innerText = desc;
         
-        const label = selectedOption.getAttribute('data-label');
-        const price = parseFloat(selectedOption.value).toFixed(2);
+        // Formatage des prix
+        const prixFormat = prix.toFixed(2).replace('.', ',');
+        document.getElementById('out-prix-u').innerText = prixFormat;
+        document.getElementById('out-prix-t').innerText = prixFormat;
+        document.getElementById('out-tot-ht').innerText = prixFormat;
+        document.getElementById('out-tot-ttc').innerText = prixFormat;
 
-        // Mise à jour de la table de facture
-        document.getElementById('pdfDesignation').innerText = label;
-        document.getElementById('pdfPrice').innerText = price + " €";
-        document.getElementById('pdfTotalBrut').innerText = price + " €";
-        document.getElementById('pdfNet').innerText = price + " €";
+        // Gestion de la mention "Acquittée"
+        const divAcq = document.getElementById('out-acquittee');
+        if (paye === 'oui') {
+            divAcq.style.display = 'block';
+            document.getElementById('out-date-acq').innerText = dateEm;
+        } else {
+            divAcq.style.display = 'none';
+        }
     }
 
-    // Lancement initial
-    applyForfait();
+    // Initialisation au chargement
+    updateFacture();
 </script>
 
 </body>
