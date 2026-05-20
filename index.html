@@ -22,7 +22,7 @@
             --accent-color: #26c4c5;
             --text-main: #1e293b;
             --border-color: #e2e8f0;
-            --puzz-orange: #eb5e28; /* Couleur orange tirée du logo Puzzbloc */
+            --puzz-orange: #eb5e28;
         }
 
         body { 
@@ -53,11 +53,14 @@
         }
 
         .studio-logo-hero {
-            width: 120px;
-            height: auto;
-            margin-bottom: 12px;
-            border-radius: 12px; /* Optionnel : adoucit les bords de la vidéo */
-            /* filter: drop-shadow(0 4px 6px rgba(0,0,0,0.05)); Retiré car parfois instable sur les vidéos */
+            width: 100%;
+            max-width: 280px; /* Vidéo beaucoup plus grande et impactante */
+            aspect-ratio: 1 / 1; /* Force un format carré pour cibler le logo */
+            object-fit: cover; /* Coupe automatiquement les bandes noires sur les côtés */
+            margin-bottom: 15px;
+            border-radius: 20px; /* Bords bien arrondis */
+            box-shadow: 0 8px 25px rgba(11, 37, 69, 0.15); /* Belle ombre pour faire ressortir la vidéo */
+            background-color: #ffffff;
         }
 
         .main-title {
@@ -79,7 +82,6 @@
             text-align: center;
         }
 
-        /* Module Spécifique Puzzbloc */
         .module-puzzbloc {
             border-top: 4px solid var(--puzz-orange);
         }
@@ -148,7 +150,7 @@
         .portfolio-item img {
             width: 55px;
             height: 55px;
-            object-fit: cover; /* cover ou contain selon le rendu souhaité */
+            object-fit: cover;
             border-radius: 8px;
             background: #fff;
             box-shadow: 0 2px 5px rgba(0,0,0,0.05);
@@ -209,7 +211,7 @@
         .footer-logo-container img {
             width: 80px;
             height: auto;
-            filter: grayscale(100%); /* Optionnel : en noir et blanc pour le footer */
+            filter: grayscale(100%);
             transition: filter 0.3s, opacity 0.3s;
         }
         
@@ -259,7 +261,7 @@
             </div>
 
             <div class="portfolio-item">
-                <img src="logo-portsducotentin.fr.jpg" alt="Logo Ports du Cotentin">
+                <img src="logo-portsducotentin.fr.png" alt="Logo Ports du Cotentin">
                 <div class="portfolio-info">
                     <h3>Ports du Cotentin</h3>
                     <a href="https://portsducotentin.fr" target="_blank">portsducotentin.fr</a>
@@ -281,7 +283,7 @@
         </div>
 
         <div class="footer-logo-container">
-            <img src="logo-cws.png" alt="Cotentin Web Studio Logo">
+            <img src="logo-cws-couleurs.png" alt="Cotentin Web Studio Logo">
         </div>
 
     </div>
