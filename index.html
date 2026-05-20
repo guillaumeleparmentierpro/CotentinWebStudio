@@ -4,15 +4,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="color-scheme" content="light">
-<!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-30Q94QCXK1"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-
-  gtag('config', 'G-30Q94QCXK1');
-</script>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-30Q94QCXK1"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-30Q94QCXK1');
+    </script>
     <title>Cotentin Web Studio</title>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800;900&display=swap" rel="stylesheet">
     
@@ -24,6 +22,7 @@
             --accent-color: #26c4c5;
             --text-main: #1e293b;
             --border-color: #e2e8f0;
+            --puzz-orange: #eb5e28; /* Couleur orange tirée du logo Puzzbloc */
         }
 
         body { 
@@ -44,7 +43,7 @@
             padding-bottom: 30px;
         }
 
-        /* --- Nouvel En-tête aéré --- */
+        /* --- En-tête aéré avec Vidéo --- */
         .hero-header {
             text-align: center;
             padding: 30px 15px 15px 15px;
@@ -57,7 +56,8 @@
             width: 120px;
             height: auto;
             margin-bottom: 12px;
-            filter: drop-shadow(0 4px 6px rgba(0,0,0,0.05));
+            border-radius: 12px; /* Optionnel : adoucit les bords de la vidéo */
+            /* filter: drop-shadow(0 4px 6px rgba(0,0,0,0.05)); Retiré car parfois instable sur les vidéos */
         }
 
         .main-title {
@@ -77,6 +77,18 @@
             box-shadow: 0 4px 15px rgba(0,0,0,0.05);
             border-top: 4px solid var(--accent-color);
             text-align: center;
+        }
+
+        /* Module Spécifique Puzzbloc */
+        .module-puzzbloc {
+            border-top: 4px solid var(--puzz-orange);
+        }
+
+        .puzzbloc-logo {
+            width: 140px;
+            height: auto;
+            margin: 0 auto 15px auto;
+            display: block;
         }
 
         h2 {
@@ -117,38 +129,48 @@
             line-height: 1;
         }
 
-        .puzzblock-badge {
-            background: linear-gradient(135deg, var(--marine-blue) 0%, #153866 100%);
-            color: white;
-            padding: 15px;
-            border-radius: 12px;
-            margin-top: 15px;
-            text-align: center;
-            border: 2px solid var(--accent-color);
-            box-shadow: 0 8px 15px rgba(11, 37, 69, 0.2);
-            position: relative;
-            overflow: hidden;
+        /* --- Design des Créations Web (Portfolio) --- */
+        .portfolio-item {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 12px;
+            text-align: left;
+            padding: 12px;
+            background: var(--primary-bg);
+            border-radius: 10px;
+            border: 1px solid var(--border-color);
+            transition: transform 0.2s;
         }
 
-        .puzzblock-badge h3 {
-            margin: 0 0 5px 0;
-            font-size: 1rem;
-            font-weight: 900;
-            color: var(--accent-color);
-            text-transform: uppercase;
-            letter-spacing: 1px;
+        .portfolio-item:active { transform: scale(0.98); }
+
+        .portfolio-item img {
+            width: 55px;
+            height: 55px;
+            object-fit: cover; /* cover ou contain selon le rendu souhaité */
+            border-radius: 8px;
+            background: #fff;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
         }
 
-        .puzzblock-badge p {
-            color: #f1f5f9;
-            margin: 0;
+        .portfolio-info h3 {
+            margin: 0 0 4px 0;
+            font-size: 0.85rem;
+            font-weight: 800;
+            color: var(--marine-blue);
+        }
+
+        .portfolio-info a {
             font-size: 0.75rem;
-            font-weight: 600;
+            color: var(--accent-color);
+            text-decoration: none;
+            font-weight: 700;
+            display: block;
         }
 
-        .btn-contact {
-            background: var(--accent-color);
-            color: var(--marine-blue) !important;
+        /* --- Boutons --- */
+        .btn-action {
             text-decoration: none;
             padding: 12px 20px;
             border-radius: 8px;
@@ -158,11 +180,43 @@
             width: 100%;
             box-sizing: border-box;
             text-align: center;
-            box-shadow: 0 4px 10px rgba(38, 196, 197, 0.3);
             transition: transform 0.2s;
         }
+
+        .btn-contact {
+            background: var(--accent-color);
+            color: var(--marine-blue) !important;
+            box-shadow: 0 4px 10px rgba(38, 196, 197, 0.3);
+        }
+
+        .btn-puzzbloc {
+            background: var(--puzz-orange);
+            color: #ffffff !important;
+            box-shadow: 0 4px 10px rgba(235, 94, 40, 0.3);
+            margin-top: 10px;
+        }
         
-        .btn-contact:active { transform: scale(0.98); }
+        .btn-action:active { transform: scale(0.98); }
+
+        /* --- Logo de fin de page --- */
+        .footer-logo-container {
+            text-align: center;
+            margin-top: 10px;
+            margin-bottom: 20px;
+            opacity: 0.6;
+        }
+
+        .footer-logo-container img {
+            width: 80px;
+            height: auto;
+            filter: grayscale(100%); /* Optionnel : en noir et blanc pour le footer */
+            transition: filter 0.3s, opacity 0.3s;
+        }
+        
+        .footer-logo-container img:hover {
+            filter: grayscale(0%);
+            opacity: 1;
+        }
     </style>
 </head>
 <body>
@@ -170,7 +224,10 @@
     <div class="app-container">
 
         <div class="hero-header">
-            <img src="logo-cws.png" alt="Cotentin Web Studio Logo" class="studio-logo-hero">
+            <video autoplay loop muted playsinline class="studio-logo-hero">
+                <source src="logo-video-cws.mp4" type="video/mp4">
+                Votre navigateur ne supporte pas la lecture de vidéos.
+            </video>
             <h1 class="main-title">COTENTIN WEB STUDIO</h1>
         </div>
 
@@ -187,17 +244,44 @@
                 <li><span>🔍</span> <div data-i18n="cws_service_3"><strong>Référencement (SEO) :</strong> Pour que vos clients vous trouvent facilement sur Google.</div></li>
                 <li><span>🎨</span> <div data-i18n="cws_service_4"><strong>Design & Identité :</strong> Logos, chartes graphiques et supports de communication.</div></li>
             </ul>
+        </div>
 
-            <div class="puzzblock-badge">
-                <h3 data-i18n="cws_puzzblock_title">🧩 Créateur de Puzzblocks</h3>
-                <p data-i18n="cws_puzzblock_text">L'innovation par le jeu ! Je conçois et crée également des concepts originaux de Puzzblocks personnalisés. Une autre façon de se démarquer !</p>
+        <div class="module">
+            <h2>Mes Créations Web</h2>
+            <p>Découvrez quelques-uns des projets réalisés pour les professionnels de la région.</p>
+
+            <div class="portfolio-item">
+                <img src="chaletgourmand.png" alt="Logo Au Chalet Gourmand">
+                <div class="portfolio-info">
+                    <h3>Au Chalet Gourmand</h3>
+                    <a href="https://chaletgourmand.com" target="_blank">chaletgourmand.com</a>
+                </div>
             </div>
+
+            <div class="portfolio-item">
+                <img src="logo-portsducotentin.fr.jpg" alt="Logo Ports du Cotentin">
+                <div class="portfolio-info">
+                    <h3>Ports du Cotentin</h3>
+                    <a href="https://portsducotentin.fr" target="_blank">portsducotentin.fr</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="module module-puzzbloc">
+            <img src="puzzbloc_logo.png" alt="Logo Puzzbloc" class="puzzbloc-logo">
+            <h2 data-i18n="cws_puzzblock_title" style="color: var(--puzz-orange);">L'innovation par le jeu</h2>
+            <p data-i18n="cws_puzzblock_text">Je conçois et crée également des concepts originaux de Puzzblocks personnalisés. Une autre façon de se démarquer et de fidéliser votre clientèle !</p>
+            <a href="https://guillaumeleparmentierpro.github.io/PuzzBlock/" target="_blank" class="btn-action btn-puzzbloc">DÉCOUVRIR LE CONCEPT</a>
         </div>
 
         <div class="module" style="background: #eff6ff; border-top-color: var(--accent-color);">
             <h2 data-i18n="cws_contact_title">Un projet en tête ?</h2>
             <p data-i18n="cws_contact_text">Vous souhaitez une application pour votre commerce, un site vitrine ou simplement discuter de vos besoins digitaux ?</p>
-            <a href="contact.html" class="btn-contact" data-i18n="cws_btn_contact">DISCUTONS DE VOTRE PROJET</a>
+            <a href="contact.html" class="btn-action btn-contact" data-i18n="cws_btn_contact">DISCUTONS DE VOTRE PROJET</a>
+        </div>
+
+        <div class="footer-logo-container">
+            <img src="logo-cws.png" alt="Cotentin Web Studio Logo">
         </div>
 
     </div>
